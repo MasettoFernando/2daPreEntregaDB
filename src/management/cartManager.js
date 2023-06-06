@@ -66,7 +66,26 @@ class cartManager{
         console.log(`Product ${pid} eliminated from cart${cid}`)
         console.log(result)
     }
-
+    updateCart= async(cid, newData)=>{
+        const cartToUpdate= await cartsModel.findOne({_id:cid})
+        cartToUpdate.products=[]
+        cartToUpdate.products.push(newData)
+        const result= await cartsModel.updateOne({_id:cid}, cartToUpdate)
+        console.log(result)
+    }
+    updateProductQty= async(cid, pid, newQty)=>{
+        const cartToUpdate= await cartsModel.findOne({_id:cid})
+        //delete the old product
+        const productIdx = cartToUpdate.products.findIndex(x => x.pid == pid)
+        cartToUpdate.products.splice(productIdx, 1)
+        //push the new one
+        cartToUpdate.products.push({
+            pid: pid,
+            qty: newQty
+        })
+        const result= await cartsModel.updateOne({_id:cid}, cartToUpdate)
+        console.log(result)
+    }
 }
 
 

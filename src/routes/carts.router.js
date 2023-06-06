@@ -37,4 +37,20 @@ router.delete('/:cid', async(req, res)=>{
     await cm.deleteOneCart(cid) 
     res.send(`product ${cid} eliminated`)
 })
+//PUT /api/carts/:cid --> Update the whole products array
+router.put('/:cid', async(req, res) =>{
+    const cid= req.params.cid
+    const newData= req.body
+    await cm.updateCart(cid, newData)
+    res.send('Cart updated')
+})
+//PUT api/carts/:cid/products/:pid -->Update the qty in one product
+router.put('/:cid/products/:pid', async(req, res)=>{
+    const cid= req.params.cid
+    const pid= req.params.pid
+    const qty= req.body
+    const newQty= qty.qty
+    await cm.updateProductQty(cid, pid, newQty)
+    res.send('product qty updated')
+})
 export default router
