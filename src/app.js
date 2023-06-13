@@ -7,6 +7,9 @@ import productsRouter from './routes/products.router.js'
 import CartsRouter from './routes/carts.router.js'
 import viewsRouter from './routes/view.router.js'
 import sessionsRouter from './routes/sessions.router.js'
+import passport from 'passport'
+import initializePassport from './config/passport.config.js'
+
 mongoose.set("strictQuery", false)
 
 
@@ -17,7 +20,7 @@ const uri="mongodb+srv://masettofernando:86njr3ykXn2cqX3r@clusterfm.5c5spbs.mong
 //Json setup
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-//app.use(express.static('./src/public'))
+
 
 //handlebars setup
 app.engine('handlebars', handlebars.engine())
@@ -33,6 +36,12 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+//Passport config
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 //Routers
 app.use('/api/products', productsRouter)
 app.use('/api/carts', CartsRouter)
